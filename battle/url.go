@@ -56,7 +56,7 @@ type parser struct {
 }
 
 // ParseURL parse an input url
-func ParseURL(clientURL string) (string, error) {
+func ParseURL(clientURL string, queryOverride map[string]string) (string, error) {
 	u, err := url.Parse(clientURL)
 	if err != nil {
 		return "", err
@@ -78,7 +78,7 @@ func ParseURL(clientURL string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	p.parseQuery()
+	p.parseQuery(queryOverride)
 	return p.outURL.String(), nil
 }
 
@@ -92,9 +92,11 @@ func transformHostToPath(host string, path string) string {
 	return strings.Join(s, "")
 }
 
-func (p *parser) parseQuery() {
+func (p *parser) parseQuery(queryOverride map[string]string) {
 	v := p.inURL.Query()
-	v.Del(queryAPIKey)
+	for key, value := range queryOverride {
+		v.Set(key, value)
+	}
 	p.outURL.RawQuery = v.Encode()
 }
 

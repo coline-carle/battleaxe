@@ -3,11 +3,28 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/wow-sweetlie/battleaxe/battle"
 
 	"github.com/urfave/cli"
 )
+
+func buildQueryMap(c *cli.Context) map[string]string {
+	queryMap := make(map[string]string)
+
+	locale := c.String("locale")
+	if locale != "" {
+		queryMap["locale"] = locale
+	}
+
+	fields := c.StringSlice("fields")
+	if len(fields) > 0 {
+		queryMap["fields"] = strings.Join(fields, ",")
+	}
+
+	return queryMap
+}
 
 func action(c *cli.Context) error {
 	if c.NArg() != 1 {
@@ -15,7 +32,10 @@ func action(c *cli.Context) error {
 	}
 
 	inURL := c.Args().First()
-	outURL, err := battle.ParseURL(inURL)
+	queryMap := buildQueryMap(c)
+
+	outURL, err := battle.ParseURL(inURL, queryMap)
+
 	if err != nil {
 		return cli.NewExitError(err, 1)
 	}
