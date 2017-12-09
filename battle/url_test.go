@@ -2,7 +2,7 @@ package battle
 
 import "testing"
 
-func TestParseInURL(t *testing.T) {
+func TestParseURL(t *testing.T) {
 	var tests = []struct {
 		in  string
 		out string
@@ -28,16 +28,16 @@ func TestParseInURL(t *testing.T) {
 			"https://eu.api.battle.net/wow/achievement/2144",
 		},
 		{
-			"wow://wow/achievement/2144",
+			"wow://achievement/2144",
 			"https://us.api.battle.net/wow/achievement/2144",
 		},
 	}
 	for _, test := range tests {
-		out, err := ParseInURL(test.in)
+		out, err := ParseURL(test.in)
 		if err != nil {
-			t.Errorf("parseInURL(%q) want: %v got error: %v", test.in, test.out, err)
+			t.Errorf("parseURL(%q) want: %v got error: %v", test.in, test.out, err)
 		} else if out != test.out {
-			t.Errorf("parseInURL(%q)\n- want:\n %v\n- got:\n %v\n", test.in, test.out, out)
+			t.Errorf("parseURL(%q)\n- want:\n %v\n- got:\n %v\n", test.in, test.out, out)
 		}
 	}
 }

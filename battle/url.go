@@ -55,8 +55,8 @@ type parser struct {
 	outURL *url.URL
 }
 
-// ParseInURL parse a battle net url
-func ParseInURL(clientURL string) (string, error) {
+// ParseURL parse an input url
+func ParseURL(clientURL string) (string, error) {
 	u, err := url.Parse(clientURL)
 	if err != nil {
 		return "", err
@@ -87,6 +87,11 @@ func concatPath(gamePath string, path string) string {
 	return strings.Join(s, "")
 }
 
+func transformHostToPath(host string, path string) string {
+	s := []string{"/", host, path}
+	return strings.Join(s, "")
+}
+
 func (p *parser) parseQuery() {
 	v := p.inURL.Query()
 	v.Del(queryAPIKey)
@@ -99,18 +104,21 @@ func (p *parser) parseScheme() error {
 
 	switch scheme {
 
-	// url is game:// type (default endpoint to US)
+	// url is game://path type (default endpoint to US)
 	case "wow":
-		p.outURL.Path = concatPath(wowPath, p.inURL.Path)
+		path := transformHostToPath(p.inURL.Host, p.inURL.Path)
+		p.outURL.Path = concatPath(wowPath, path)
 		p.outURL.Host = DefaultHost
 	case "sc2":
-		p.outURL.Path = concatPath(sc2Path, p.inURL.Path)
+		path := transformHostToPath(p.inURL.Host, p.inURL.Path)
+		p.outURL.Path = concatPath(sc2Path, path)
 		p.outURL.Host = DefaultHost
 	case "d3":
-		p.outURL.Path = concatPath(sc2Path, p.inURL.Path)
+		path := transformHostToPath(p.inURL.Host, p.inURL.Path)
+		p.outURL.Path = concatPath(sc2Path, path)
 		p.outURL.Host = DefaultHost
 
-	// url i
+		// url is region://game/path type
 	case "eu":
 		p.outURL.Host = euHost
 		p.outURL.Path = concatPath(p.inURL.Host, p.inURL.Path)
