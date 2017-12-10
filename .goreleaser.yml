@@ -52,6 +52,21 @@ archive:
   files:
     - README.md
     - LICENSE
+brew:
+  github:
+    owner: wow-sweetlie
+    name: homebrew-tap
+
+  folder: Formula
+
+  description: "Terminal battle.net API client"
+
+snapcraft:
+  summary: "Terminal battle.net API client"
+  grade: devel
+  confinement: strict
+
+
 release:
   prerelease: true
   name_template: "{{.ProjectName}}-v{{.Version}}"
