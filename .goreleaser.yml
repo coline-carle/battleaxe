@@ -48,3 +48,6 @@ archive:
     darwin: macOS
     linux: Linux
     windows: Windows
+  files:
+    - README.md
+    - LICENSE.md
