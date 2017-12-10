@@ -61,14 +61,12 @@ brew:
 
   description: "Terminal battle.net API client"
 
-snapcraft:
-  summary: "Terminal battle.net API client"
-  description: |
-    battleaxe is an opiniated terminal client for Battle.NET community API
-
-  grade: devel
-  confinement: strict
-
+fpm:
+  homepage: https://github.com/wow-sweetlie/battleaxe
+  maintainer: Sweetlie <sweetlie@wipeinc.io>
+  formats:
+    - deb
+    - rpm
 
 release:
   prerelease: true
