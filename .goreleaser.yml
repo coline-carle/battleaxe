@@ -63,6 +63,9 @@ brew:
 
 snapcraft:
   summary: "Terminal battle.net API client"
+  description: |
+    battleaxe is an opiniated terminal client for Battle.NET community API
+
   grade: devel
   confinement: strict
 
