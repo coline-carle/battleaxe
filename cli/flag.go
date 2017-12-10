@@ -13,6 +13,7 @@ type appFlags struct {
 	head    bool
 	human   bool
 	version bool
+	dry     bool
 }
 
 func firstString(a string, b string) string {
@@ -24,11 +25,13 @@ func firstString(a string, b string) string {
 
 func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 	return &appFlags{
-		locale: firstString(afterFlags.locale, flags.locale),
-		fields: firstString(afterFlags.fields, flags.fields),
-		apikey: firstString(afterFlags.apikey, flags.apikey),
-		head:   flags.head || afterFlags.head,
-		human:  flags.human || afterFlags.human,
+		locale:  firstString(afterFlags.locale, flags.locale),
+		fields:  firstString(afterFlags.fields, flags.fields),
+		apikey:  firstString(afterFlags.apikey, flags.apikey),
+		head:    flags.head || afterFlags.head,
+		human:   flags.human || afterFlags.human,
+		version: flags.version || afterFlags.version,
+		dry:     flags.dry || afterFlags.dry,
 	}
 }
 
@@ -61,6 +64,10 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	versionUsage := version
 	flagset.BoolVar(&flags.version, "version", false, versionUsage)
 	flagset.BoolVar(&flags.version, "V", false, versionUsage)
+
+	dryUsage := "dry-run"
+	flagset.BoolVar(&flags.dry, "dry", false, dryUsage)
+	flagset.BoolVar(&flags.dry, "D", false, dryUsage)
 
 	err := flagset.Parse(args)
 	if err != nil {

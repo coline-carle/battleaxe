@@ -8,6 +8,7 @@ builds:
       - linux
     goarch:
       - amd64
+      - 386
   - binary: wowaxe
     main: cmd/wowaxe/main.go
     goos:
@@ -16,6 +17,16 @@ builds:
       - linux
     goarch:
       - amd64
+      - 386
+  - binary: daxe
+    main: cmd/daxe/main.go
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
 archive:
   format: tar.gz
   format_overrides:
@@ -24,6 +35,7 @@ archive:
   name_template: "{{.Binary}}_{{.Version}}_{{.Os}}-{{.Arch}}"
   replacements:
     amd64: 64bit
+    386: 32bit
     darwin: macOS
     linux: Linux
     windows: Windows

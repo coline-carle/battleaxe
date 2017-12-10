@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -52,6 +53,11 @@ func Run(game battle.Game, args []string) {
 
 	if err != nil {
 		logger.Fatal(err)
+	}
+
+	if flags.dry {
+		fmt.Println(url)
+		os.Exit(0)
 	}
 
 	resp, err := http.Get(url)
