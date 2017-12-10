@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/wow-sweetlie/battleaxe/battle"
 )
@@ -19,7 +18,7 @@ func init() {
 
 type appFlags struct {
 	locale  string
-	fields  []string
+	fields  string
 	apikey  string
 	version bool
 }
@@ -37,17 +36,10 @@ func firstString(a string, b string) string {
 	return a
 }
 
-func firstArray(a []string, b []string) []string {
-	if len(a) == 0 {
-		return b
-	}
-	return a
-}
-
 func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 	return &appFlags{
 		locale:  firstString(afterFlags.locale, flags.locale),
-		fields:  firstArray(afterFlags.fields, flags.fields),
+		fields:  firstString(afterFlags.fields, flags.fields),
 		apikey:  firstString(afterFlags.apikey, flags.apikey),
 		version: flags.version || afterFlags.version,
 	}
@@ -60,8 +52,8 @@ func buildQueryMap(f *appFlags) map[string]string {
 		queryMap["locale"] = f.locale
 	}
 
-	if len(f.fields) > 0 {
-		queryMap["fields"] = strings.Join(f.fields, ",")
+	if f.fields != "" {
+		queryMap["fields"] = f.fields
 	}
 
 	if f.apikey != "" {
@@ -115,17 +107,24 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	flagset.StringVar(&flags.apikey, "apikey", apikeyFromEnv, apikeyUsage)
 	flagset.StringVar(&flags.apikey, "k", apikeyFromEnv, apikeyUsage)
 
+	fieldsUsage := "select fields to fetch on endpoint with this option"
+	flagset.StringVar(&flags.fields, "fields", "", fieldsUsage)
+	flagset.StringVar(&flags.fields, "f", "", fieldsUsage)
+
 	err := flagset.Parse(args)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return flags, flagset.Args()
+	return flags, flagset.Args(), nil
 }
 
 func main() {
 	// default apikey to
-	flags, args := parseFlags(os.Args[1:])
+	flags, args, err := parseFlags(os.Args[1:])
+	if err != nil {
+		logger.Fatal(err)
+	}
 
 	if len(args) == 0 {
 		logger.Fatal("battleaxe need an url")
@@ -136,7 +135,10 @@ func main() {
 	// let's be tolerent and parse flag after the url
 	if len(args) > 1 {
 		var afterFlags *appFlags
-		afterFlags, args = parseFlags(args[1:])
+		afterFlags, args, err = parseFlags(args[1:])
+		if err != nil {
+			logger.Fatal(err)
+		}
 		flags = mergeFlags(flags, afterFlags)
 	}
 	if len(args) > 1 {
