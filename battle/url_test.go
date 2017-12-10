@@ -2,6 +2,38 @@ package battle
 
 import "testing"
 
+func TestParseURLWithGame(t *testing.T) {
+	var tests = []struct {
+		in   string
+		out  string
+		game Game
+	}{
+		{
+			"eu://achievement/2144?locale=en_US&apikey=APIKEY",
+			"https://eu.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			WoW,
+		},
+		{
+			"achievement://2144?locale=en_US&apikey=APIKEY",
+			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			WoW,
+		},
+		{
+			"character://Archimonde/Sweetlie",
+			"https://us.api.battle.net/wow/character/Archimonde/Sweetlie",
+			WoW,
+		},
+	}
+	for _, test := range tests {
+		out, err := ParseURL(test.in, nil, test.game)
+		if err != nil {
+			t.Errorf("parseURL(%q, nil)\n- want:\n %v\n- got:\n error: %v\n", test.in, test.out, err)
+		} else if out != test.out {
+			t.Errorf("parseURL(%q, nil)\n- want:\n %v\n- got:\n %v\n", test.in, test.out, out)
+		}
+	}
+}
+
 func TestParseURL(t *testing.T) {
 	var tests = []struct {
 		in  string

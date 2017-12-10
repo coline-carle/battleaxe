@@ -74,7 +74,17 @@ func ParseURL(clientURL string, queryOverride map[string]string, game Game) (str
 		outURL: outURL,
 	}
 
-	err = p.parseScheme()
+	switch game {
+	case WoW:
+		err = p.parseGameScheme(wowPath)
+	case D3:
+		err = p.parseGameScheme(d3Path)
+	case SC2:
+		err = p.parseGameScheme(sc2Path)
+	default:
+		err = p.parseGeneralScheme()
+	}
+
 	if err != nil {
 		return "", err
 	}
@@ -100,8 +110,42 @@ func (p *parser) parseQuery(queryOverride map[string]string) {
 	p.outURL.RawQuery = v.Encode()
 }
 
+func (p *parser) parseGameScheme(gamePath string) error {
+	scheme := strings.ToLower(p.inURL.Scheme)
+	switch scheme {
+	case "eu":
+		p.outURL.Host = euHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+	case "us":
+		p.outURL.Host = usHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+	case "usa":
+		p.outURL.Host = usHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+	case "kr":
+		p.outURL.Host = krHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+	case "tw":
+		p.outURL.Host = twHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+	case "sea":
+		p.outURL.Host = seaHost
+		p.outURL.Path = strings.Join([]string{gamePath, "/", p.inURL.Host, p.inURL.Path}, "")
+
+	case "https":
+		p.outURL.Host = p.inURL.Host
+	case "http":
+		p.outURL.Host = p.inURL.Host
+	default:
+		path := strings.Join([]string{gamePath, scheme, p.inURL.Host}, "/")
+		p.outURL.Path = concatPath(path, p.inURL.Path)
+		p.outURL.Host = DefaultHost
+	}
+	return nil
+}
+
 // setup the game and entrypoint part of the url, based on input shceme
-func (p *parser) parseScheme() error {
+func (p *parser) parseGeneralScheme() error {
 	scheme := strings.ToLower(p.inURL.Scheme)
 
 	switch scheme {
