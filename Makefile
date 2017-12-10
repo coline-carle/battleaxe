@@ -1,6 +1,9 @@
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 TEST?=./...
 
+tools:
+	go get github.com/golang/dep/cmd/dep
+
 default: vet
 
 vet:
