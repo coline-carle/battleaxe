@@ -106,6 +106,10 @@ SEE ALSO:
 VERSION:
   0.0.1
 ```
+## Releases
+
+https://github.com/wow-sweetlie/battleaxe/releases
+
 
 ## License
 
