@@ -27,6 +27,15 @@ builds:
     goarch:
       - amd64
       - 386
+  - binary: scaxe
+    main: cmd/scaxe/main.go
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
 archive:
   format: tar.gz
   format_overrides:

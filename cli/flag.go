@@ -14,6 +14,7 @@ type appFlags struct {
 	human   bool
 	version bool
 	dry     bool
+	help    bool
 }
 
 func firstString(a string, b string) string {
@@ -32,6 +33,7 @@ func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 		human:   flags.human || afterFlags.human,
 		version: flags.version || afterFlags.version,
 		dry:     flags.dry || afterFlags.dry,
+		help:    flags.help || afterFlags.help,
 	}
 }
 
@@ -40,34 +42,32 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 
 	flagset := flag.NewFlagSet("battleaxe", -1)
 
-	localeUsage := "locale"
-	flagset.StringVar(&flags.locale, "locale", "", localeUsage)
-	flagset.StringVar(&flags.locale, "l", "", localeUsage)
+	// I do not use usage string here see : help.go
+	usage := ""
+	flagset.StringVar(&flags.locale, "locale", "", usage)
+	flagset.StringVar(&flags.locale, "l", "", usage)
 
-	apikeyUsage := "your personal api key"
-	flagset.StringVar(&flags.apikey, "apikey", "", apikeyUsage)
-	flagset.StringVar(&flags.apikey, "k", "", apikeyUsage)
+	flagset.StringVar(&flags.apikey, "apikey", "", usage)
+	flagset.StringVar(&flags.apikey, "k", "", usage)
 
-	fieldsUsage := "select fields to fetch on endpoint with this option"
-	flagset.StringVar(&flags.fields, "fields", "", fieldsUsage)
-	flagset.StringVar(&flags.fields, "f", "", fieldsUsage)
+	flagset.StringVar(&flags.fields, "fields", "", usage)
+	flagset.StringVar(&flags.fields, "f", "", usage)
 
-	humanUsage := "humanize the output with some color and proper indenting"
-	flagset.BoolVar(&flags.human, "color", false, humanUsage)
-	flagset.BoolVar(&flags.human, "c", false, humanUsage)
-	flagset.BoolVar(&flags.human, "h", false, humanUsage)
+	flagset.BoolVar(&flags.human, "color", false, usage)
+	flagset.BoolVar(&flags.human, "human", false, usage)
+	flagset.BoolVar(&flags.human, "C", false, usage)
 
-	headUsage := "show headers"
-	flagset.BoolVar(&flags.head, "head", false, headUsage)
-	flagset.BoolVar(&flags.head, "I", false, headUsage)
+	flagset.BoolVar(&flags.head, "head", false, usage)
+	flagset.BoolVar(&flags.head, "I", false, usage)
 
-	versionUsage := version
-	flagset.BoolVar(&flags.version, "version", false, versionUsage)
-	flagset.BoolVar(&flags.version, "V", false, versionUsage)
+	flagset.BoolVar(&flags.version, "version", false, usage)
+	flagset.BoolVar(&flags.version, "V", false, usage)
 
-	dryUsage := "dry-run"
-	flagset.BoolVar(&flags.dry, "dry", false, dryUsage)
-	flagset.BoolVar(&flags.dry, "D", false, dryUsage)
+	flagset.BoolVar(&flags.dry, "dry", false, usage)
+	flagset.BoolVar(&flags.dry, "D", false, usage)
+
+	flagset.BoolVar(&flags.help, "help", false, usage)
+	flagset.BoolVar(&flags.help, "usage", false, usage)
 
 	err := flagset.Parse(args)
 	if err != nil {
@@ -101,7 +101,7 @@ func parseCommand(args []string) (flags *appFlags, url string, err error) {
 		var afterFlags *appFlags
 		afterFlags, args, err = parseFlags(args)
 		if err != nil {
-			logger.Fatal(err)
+			return nil, "", err
 		}
 		flags = mergeFlags(flags, afterFlags)
 	}

@@ -18,7 +18,7 @@ var (
 )
 
 func printVersion() {
-	fmt.Printf("v%s\n", version)
+	fmt.Printf("v%s\n", Version)
 	os.Exit(0)
 }
 
