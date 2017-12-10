@@ -1,25 +1,28 @@
 package main
 
 import (
+	"bytes"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/wow-sweetlie/battleaxe/battle"
+
+	"github.com/fatih/color"
+	"github.com/nwidger/jsoncolor"
 )
 
-var logger *log.Logger
-
-func init() {
-	logger = log.New(os.Stderr, "", 0)
-}
-
 type appFlags struct {
-	locale  string
-	fields  string
-	apikey  string
+	locale string
+	fields string
+	apikey string
+
+	head    bool
+	human   bool
 	version bool
 }
 
@@ -27,6 +30,19 @@ type context struct {
 	queryMap map[string]string
 	flags    *appFlags
 	url      string
+}
+
+const version = "0.0.1"
+
+var (
+	colorField = color.New(color.FgBlue, color.Bold).SprintFunc()
+	colorValue = color.New().SprintFunc()
+)
+
+var logger *log.Logger
+
+func init() {
+	logger = log.New(os.Stderr, "", 0)
 }
 
 func firstString(a string, b string) string {
@@ -38,10 +54,11 @@ func firstString(a string, b string) string {
 
 func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 	return &appFlags{
-		locale:  firstString(afterFlags.locale, flags.locale),
-		fields:  firstString(afterFlags.fields, flags.fields),
-		apikey:  firstString(afterFlags.apikey, flags.apikey),
-		version: flags.version || afterFlags.version,
+		locale: firstString(afterFlags.locale, flags.locale),
+		fields: firstString(afterFlags.fields, flags.fields),
+		apikey: firstString(afterFlags.apikey, flags.apikey),
+		head:   flags.head || afterFlags.head,
+		human:  flags.human || afterFlags.human,
 	}
 }
 
@@ -65,13 +82,29 @@ func buildQueryMap(f *appFlags) map[string]string {
 
 func (c *context) display(resp *http.Response) error {
 	defer resp.Body.Close()
-
+	if c.flags.human {
+		b := new(bytes.Buffer)
+		b.ReadFrom(resp.Body)
+		f := jsoncolor.NewFormatter()
+		err := f.Format(os.Stdout, b.Bytes())
+		if err != nil {
+			log.Fatal(err)
+		}
+		os.Exit(0)
+	}
 	_, err := io.Copy(os.Stdout, resp.Body)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (c *context) displayHeader(resp *http.Response) {
+	for field, value := range resp.Header {
+		formatedValue := strings.Join(value, ",")
+		fmt.Printf("%s: %s\n", colorField(field), colorValue(formatedValue))
+	}
 }
 
 func (c *context) action() {
@@ -83,6 +116,16 @@ func (c *context) action() {
 	}
 
 	resp, err := http.Get(url)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	if c.flags.head {
+		c.displayHeader(resp)
+		os.Exit(0)
+	}
+
+	err = c.display(resp)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -111,6 +154,19 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	flagset.StringVar(&flags.fields, "fields", "", fieldsUsage)
 	flagset.StringVar(&flags.fields, "f", "", fieldsUsage)
 
+	humanUsage := "humanize the output with some color and proper indenting"
+	flagset.BoolVar(&flags.human, "color", false, humanUsage)
+	flagset.BoolVar(&flags.human, "c", false, humanUsage)
+	flagset.BoolVar(&flags.human, "h", false, humanUsage)
+
+	headUsage := "show headers"
+	flagset.BoolVar(&flags.head, "head", false, headUsage)
+	flagset.BoolVar(&flags.head, "I", false, headUsage)
+
+	versionUsage := version
+	flagset.BoolVar(&flags.version, "version", false, versionUsage)
+	flagset.BoolVar(&flags.version, "V", false, versionUsage)
+
 	err := flagset.Parse(args)
 	if err != nil {
 		return nil, nil, err
@@ -119,11 +175,20 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	return flags, flagset.Args(), nil
 }
 
+func showVersion() {
+	fmt.Printf("v%s\n", version)
+	os.Exit(0)
+}
+
 func main() {
 	// default apikey to
 	flags, args, err := parseFlags(os.Args[1:])
 	if err != nil {
 		logger.Fatal(err)
+	}
+
+	if flags.version {
+		showVersion()
 	}
 
 	if len(args) == 0 {
