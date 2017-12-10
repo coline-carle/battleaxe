@@ -17,8 +17,9 @@ var (
 	colorValue = color.New().SprintFunc()
 )
 
-func printVersion() {
-	fmt.Printf("v%s\n", Version)
+// PrintVersion : print the version
+func PrintVersion() {
+	fmt.Println(Version)
 	os.Exit(0)
 }
 

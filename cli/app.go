@@ -63,6 +63,19 @@ func Run(game battle.Game, args []string) {
 		os.Exit(1)
 	}
 
+	if flags.version {
+		PrintVersion()
+		os.Exit(0)
+	}
+
+	if flags.help {
+		err = PrintHelp(AppName(game))
+		if err != nil {
+			logger.Fatal(err)
+		}
+		os.Exit(0)
+	}
+
 	// if apikey not set try to fetch it from env
 	if flags.apikey == "" {
 		flags.apikey = os.Getenv("BATTLENET_CLIENT_ID")

@@ -84,8 +84,8 @@ func parseCommand(args []string) (flags *appFlags, url string, err error) {
 		return nil, url, err
 	}
 
-	// -version : don't try to parse what's remaining
-	if flags.version {
+	// don't try to parse what's remaining
+	if flags.version || flags.help {
 		return flags, "", nil
 	}
 

@@ -7,27 +7,30 @@ import (
 )
 
 var appHelpTemplate = `NAME:
-   {{.Name}}
+  {{.Name}}
 
 USAGE:
-   {{.Name}} {{.Usage}}
+  {{.Name}} {{.Usage}}
 
 DESCRIPTION:
 	examples of urls: {{range .Examples }}
-	 {{.}}{{end}}
+	  {{.}}{{end}}
 
 	Golden rule: Flags that modify query options, always take precedance
 	over the query option of the url. In case of multiple definition of the same
 	flag: The rightest flag win.
 
 QUERY OPTIONS: {{range .QueryFlags}}
-   {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}
+  {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}
 
 GLOBAL OPTIONS: {{range .GeneralFlags}}
-   {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}
+  {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}
+
+SEE ALSO:
+	{{join .Apps ", "}}
 
 VERSION:
-   {{.Version}}
+  {{.Version}}
 `
 
 // FlagHelp : context for flag help
@@ -42,7 +45,7 @@ type FlagHelp struct {
 type AppHelp struct {
 	Name         string
 	Usage        string
-	Description  string
+	Apps         []string
 	Examples     []string
 	QueryFlags   []FlagHelp
 	GeneralFlags []FlagHelp
@@ -70,7 +73,7 @@ var generalFlags = []FlagHelp{
 		"print headers instead of body",
 	},
 	{
-		[]string{"human", "color", "C"},
+		[]string{"color", "C"},
 		"humanize response with color and indentation",
 	},
 	{
@@ -93,6 +96,16 @@ var urlExemples = map[string][]string{
 		"us://wow/achievement/2144",
 		"wow://achievement/2144",
 	},
+	"wowaxe": []string{
+		"https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY",
+		"us://achievement/2144",
+		"achievement://2144",
+	},
+	"scaxe": []string{
+		"https://us.api.battle.net/sc2/ladder/194163?locale=en_US&apikey=APIKEY",
+		"us://ladder/2144",
+		"ladder://2144",
+	},
 }
 
 // PrintHelp : ...
@@ -104,7 +117,7 @@ func PrintHelp(appname string) error {
 		Name:         appname,
 		GeneralFlags: generalFlags,
 		QueryFlags:   queryFlags,
-		Description:  "exmples of urls:",
+		Apps:         []string{"battleaxe", "wowaxe", "scaxe", "daxe"},
 		Examples:     urlExemples[appname],
 		Usage:        "[OPTIONS] scheme://path/to/resource [MORE OPTIONS]",
 		Version:      Version,
