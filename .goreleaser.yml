@@ -51,7 +51,7 @@ archive:
     windows: Windows
   files:
     - README.md
-    - LICENSE.md
+    - LICENSE
 release:
   prerelease: true
   name_template: "{{.ProjectName}}-v{{.Version}}"
