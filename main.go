@@ -1,69 +1,155 @@
 package main
 
 import (
-	"fmt"
+	"flag"
+	"io"
+	"log"
+	"net/http"
 	"os"
 	"strings"
 
 	"github.com/wow-sweetlie/battleaxe/battle"
-
-	"github.com/urfave/cli"
 )
 
-func buildQueryMap(c *cli.Context) map[string]string {
+var logger *log.Logger
+
+func init() {
+	logger = log.New(os.Stderr, "", 0)
+}
+
+type appFlags struct {
+	locale  string
+	fields  []string
+	apikey  string
+	version bool
+}
+
+type context struct {
+	queryMap map[string]string
+	flags    *appFlags
+	url      string
+}
+
+func firstString(a string, b string) string {
+	if a == "" {
+		return b
+	}
+	return a
+}
+
+func firstArray(a []string, b []string) []string {
+	if len(a) == 0 {
+		return b
+	}
+	return a
+}
+
+func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
+	return &appFlags{
+		locale:  firstString(afterFlags.locale, flags.locale),
+		fields:  firstArray(afterFlags.fields, flags.fields),
+		apikey:  firstString(afterFlags.apikey, flags.apikey),
+		version: flags.version || afterFlags.version,
+	}
+}
+
+func buildQueryMap(f *appFlags) map[string]string {
 	queryMap := make(map[string]string)
 
-	locale := c.String("locale")
-	if locale != "" {
-		queryMap["locale"] = locale
+	if f.locale != "" {
+		queryMap["locale"] = f.locale
 	}
 
-	fields := c.StringSlice("fields")
-	if len(fields) > 0 {
-		queryMap["fields"] = strings.Join(fields, ",")
+	if len(f.fields) > 0 {
+		queryMap["fields"] = strings.Join(f.fields, ",")
+	}
+
+	if f.apikey != "" {
+		queryMap["apikey"] = f.apikey
 	}
 
 	return queryMap
 }
 
-func action(c *cli.Context) error {
-	if c.NArg() != 1 {
-		return cli.NewExitError("invalid number of arguments", 1)
-	}
+func (c *context) display(resp *http.Response) error {
+	defer resp.Body.Close()
 
-	inURL := c.Args().First()
-	queryMap := buildQueryMap(c)
-
-	outURL, err := battle.ParseURL(inURL, queryMap)
-
+	_, err := io.Copy(os.Stdout, resp.Body)
 	if err != nil {
-		return cli.NewExitError(err, 1)
+		return err
 	}
-	fmt.Println(outURL)
+
 	return nil
 }
 
-func main() {
+func (c *context) action() {
 
-	app := cli.NewApp()
-	app.Name = "battleaxe"
-	app.Usage = "region://game/path"
-	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:  "locale, l",
-			Usage: "`locale`, ex: --locale en_US (default is non-set)",
-		},
-		cli.StringFlag{
-			Name:   "apikey, k",
-			EnvVar: "BATTLENET_CLIENT_ID",
-			Usage:  "your personal `apikey`",
-		},
-		cli.StringSliceFlag{
-			Name:  "fields, f",
-			Usage: "set up `fields` for method that have ones. (override the ones present in url)",
-		},
+	url, err := battle.ParseURL(c.url, c.queryMap)
+
+	if err != nil {
+		logger.Fatal(err)
 	}
-	app.Action = action
 
-	app.Run(os.Args)
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	err = c.display(resp)
+	if err != nil {
+		logger.Fatal(err)
+	}
+}
+
+func parseFlags(args []string) (*appFlags, []string, error) {
+	flags := &appFlags{}
+	apikeyFromEnv := os.Getenv("BATTLENET_CLIENT_ID")
+
+	flagset := flag.NewFlagSet("battleaxe", -1)
+
+	localeUsage := "locale"
+	flagset.StringVar(&flags.locale, "locale", "", localeUsage)
+	flagset.StringVar(&flags.locale, "l", "", localeUsage)
+
+	apikeyUsage := "your personal api key"
+	flagset.StringVar(&flags.apikey, "apikey", apikeyFromEnv, apikeyUsage)
+	flagset.StringVar(&flags.apikey, "k", apikeyFromEnv, apikeyUsage)
+
+	err := flagset.Parse(args)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return flags, flagset.Args()
+}
+
+func main() {
+	// default apikey to
+	flags, args := parseFlags(os.Args[1:])
+
+	if len(args) == 0 {
+		logger.Fatal("battleaxe need an url")
+	}
+
+	url := args[0]
+
+	// let's be tolerent and parse flag after the url
+	if len(args) > 1 {
+		var afterFlags *appFlags
+		afterFlags, args = parseFlags(args[1:])
+		flags = mergeFlags(flags, afterFlags)
+	}
+	if len(args) > 1 {
+		logger.Fatal("battleaxe can parse only one url at a time")
+	}
+
+	queryMap := buildQueryMap(flags)
+
+	c := &context{
+		url:      url,
+		flags:    flags,
+		queryMap: queryMap,
+	}
+
+	c.action()
 }
