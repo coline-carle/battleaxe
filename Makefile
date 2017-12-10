@@ -24,3 +24,15 @@ test:
 
 fmt:
 	gofmt -w $(GOFMT_FILES)
+
+vendor:
+	dep ensure
+
+clean:
+	rm -rf dist
+
+release: vendor clean
+	goreleaser
+
+snapshot: vendor clean
+	goreleaser --snapshot
