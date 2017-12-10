@@ -33,7 +33,7 @@ func TestParseURL(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		out, err := ParseURL(test.in, nil)
+		out, err := ParseURL(test.in, nil, Any)
 		if err != nil {
 			t.Errorf("parseURL(%q, nil)\n- want:\n %v\n- got:\n error: %v\n", test.in, test.out, err)
 		} else if out != test.out {
@@ -73,7 +73,7 @@ func TestParseURLWithOverride(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		out, err := ParseURL(test.in, test.override)
+		out, err := ParseURL(test.in, test.override, Any)
 		if err != nil {
 			t.Errorf("parseURL(%q, %q)\n- want:\n %v\n- got error:\n %v\n", test.in, test.override, test.out, err)
 		} else if out != test.out {

@@ -56,7 +56,7 @@ type parser struct {
 }
 
 // ParseURL parse an input url
-func ParseURL(clientURL string, queryOverride map[string]string) (string, error) {
+func ParseURL(clientURL string, queryOverride map[string]string, game Game) (string, error) {
 	u, err := url.Parse(clientURL)
 	if err != nil {
 		return "", err

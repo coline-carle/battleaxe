@@ -1,0 +1,10 @@
+---
+builds:
+  - binary: battleaxe
+    main: cmd/battleaxe/main.go
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
