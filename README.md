@@ -1,5 +1,5 @@
 # battleaxe
-[!][circleCI](https://circleci.com/gh/wow-sweetlie/battleaxe.svg?style=svg)](https://circleci.com/gh/wow-sweetlie/battleaxe)
+[![circleCI](https://circleci.com/gh/wow-sweetlie/battleaxe.svg?style=svg)](https://circleci.com/gh/wow-sweetlie/battleaxe)
 
 battleaxe is an opiniated terminal client for Battle.NET community API
 
