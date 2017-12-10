@@ -106,6 +106,11 @@ var urlExemples = map[string][]string{
 		"us://ladder/2144",
 		"ladder://2144",
 	},
+	"daxe": []string{
+		"https://us.api.battle.net/d3/data/follower/templar?locale=en_US&apikey=APIKEY",
+		"us://data/follower/templar",
+		"data://follower/templar",
+	},
 }
 
 // PrintHelp : ...
