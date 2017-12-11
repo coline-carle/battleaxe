@@ -93,9 +93,9 @@ func TestParseCommand(t *testing.T) {
 
 func TestParseCommandError(t *testing.T) {
 	var tests = [][]string{
-		[]string{"--apikey=123"},
-		[]string{"--apikey=123", "url1", "url2"},
-		[]string{"--apikey=123", "url1", "url2", "--apikey=456"},
+		{"--apikey=123"},
+		{"--apikey=123", "url1", "url2"},
+		{"--apikey=123", "url1", "url2", "--apikey=456"},
 	}
 	for _, test := range tests {
 		outFlags, outURL, err := parseCommand(test)

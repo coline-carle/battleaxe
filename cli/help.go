@@ -91,22 +91,22 @@ var generalFlags = []FlagHelp{
 }
 
 var urlExemples = map[string][]string{
-	"battleaxe": []string{
+	"battleaxe": {
 		"https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY",
 		"us://wow/achievement/2144",
 		"wow://achievement/2144",
 	},
-	"wowaxe": []string{
+	"wowaxe": {
 		"https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY",
 		"us://achievement/2144",
 		"achievement://2144",
 	},
-	"scaxe": []string{
+	"scaxe": {
 		"https://us.api.battle.net/sc2/ladder/194163?locale=en_US&apikey=APIKEY",
 		"us://ladder/2144",
 		"ladder://2144",
 	},
-	"daxe": []string{
+	"daxe": {
 		"https://us.api.battle.net/d3/data/follower/templar?locale=en_US&apikey=APIKEY",
 		"us://data/follower/templar",
 		"data://follower/templar",
