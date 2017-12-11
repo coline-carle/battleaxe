@@ -110,6 +110,15 @@ VERSION:
 
 https://github.com/wow-sweetlie/battleaxe/releases
 
+if go is installed and configured, you can get master of one one the tool like
+this :
+
+* go get -U github.com/wow-sweetlie/battleaxe/cmd/battleaxe
+* go get -U github.com/wow-sweetlie/battleaxe/cmd/wowaxe
+* go get -U github.com/wow-sweetlie/battleaxe/cmd/daxe
+* go get -U github.com/wow-sweetlie/battleaxe/cmd/scaxe
+
+
 
 ## License
 
