@@ -1,6 +1,8 @@
-GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
+GO_FILES?=$(shell find . -name '*.go' -type f -not -path "./vendor/*")
 TEST?=./...
-PKGS ?=$(shell go list ./... | grep -v /vendor/)
+PKGS?=$(shell go list ./... | grep -v /vendor/)
+DIST?=./dist
+
 tools:
 	go get github.com/golang/dep/cmd/dep
 
@@ -11,6 +13,11 @@ lint: fmtcheck vet vendor
 test: lint
 	@echo "+ $@"
 	@go test -v $(TEST)
+
+misspell:
+	@echo "+ $@"
+	@test -z "$$(find . -name '*' -type f -not -path './vendor/*' -not -path './.git/*' | xargs misspell | tee /dev/stderr)"
+
 
 fmtcheck:
 	@echo "+ $@"
@@ -27,7 +34,8 @@ vendor:
 	dep ensure
 
 clean:
-	rm -rf dist
+	@echo "+ $@"
+	@rm -rf ${DIST}
 
 release: clean test
 	goreleaser
