@@ -52,7 +52,7 @@ export BATTLENET_CLIENT_ID=myapikey
 * End of Story
 
 ```
-wowaxe achievment://2144
+wowaxe achievement://2144
 ```
 
 
@@ -84,7 +84,7 @@ DESCRIPTION:
           us://wow/achievement/2144
           wow://achievement/2144
 
-        Golden rule: Flags that modify query options, always take precedance
+        Golden rule: Flags that modify query options, always take precedence
         over the query option of the url. In case of multiple definition of the same
         flag: The rightest flag win.
 

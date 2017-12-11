@@ -16,7 +16,7 @@ DESCRIPTION:
 	examples of urls: {{range .Examples }}
 	  {{.}}{{end}}
 
-	Golden rule: Flags that modify query options, always take precedance
+	Golden rule: Flags that modify query options, always take precedence
 	over the query option of the url. In case of multiple definition of the same
 	flag: The rightest flag win.
 
