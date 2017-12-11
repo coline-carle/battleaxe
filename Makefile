@@ -8,9 +8,12 @@ tools:
 
 default: vet
 
-lint: fmtcheck vet vendor
+lint:
+	@echo "+ $@"
+	@test -z "$$(golint ${GO_FILES} | tee /dev/stderr)"
 
-test: lint
+
+test: lint fmtcheck vet vendor
 	@echo "+ $@"
 	@go test -v $(TEST)
 
@@ -24,7 +27,7 @@ fmtcheck:
 	@test -z "$$(gofmt -s -l . | grep -v vendor/ | tee /dev/stderr)"
 
 fmt:
-	gofmt -s -w ${GOFMT_FILES}
+	gofmt -s -w ${GO_FILES}
 
 vet:
 	@echo "+ $@"
