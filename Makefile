@@ -10,7 +10,7 @@ default: vet
 
 lint:
 	@echo "+ $@"
-	@test -z "$$(golint ${GO_FILES} | tee /dev/stderr)"
+	@test -z "$$(find . -name '*.go' -type f -not -path "./vendor/*" -exec golint {} \; | tee /dev/stderr)"
 
 
 test: lint fmtcheck vet vendor
