@@ -1,29 +1,27 @@
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 TEST?=./...
-
+PKGS ?=$(shell go list ./... | grep -v /vendor/)
 tools:
 	go get github.com/golang/dep/cmd/dep
 
 default: vet
 
-vet:
-	@echo 'go vet ./...'
-	@go vet ./... ; if [ $$? -eq 1 ]; then \
-		echo ""; \
-		echo "Vet found suspicious constructs. Please check the reported constructs"; \
-		echo "and fix them if necessary before submitting the code for review."; \
-		exit 1; \
-fi
+lint: fmtcheck vet vendor
 
-lint:
-	golint ./...
+test: lint
+	@echo "+ $@"
+	@go test -v $(TEST)
 
-test:
-	go test -i $(TEST) || exit 1
-	go list $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=60s -parallel=4
+fmtcheck:
+	@echo "+ $@"
+	@test -z "$$(gofmt -s -l . | grep -v vendor/ | tee /dev/stderr)"
 
 fmt:
-	gofmt -w $(GOFMT_FILES)
+	gofmt -s -w ${GOFMT_FILES}
+
+vet:
+	@echo "+ $@"
+	@test -z "$$(go tool vet -printf=false . 2>&1 | grep -v vendor/ | tee /dev/stderr)"
 
 vendor:
 	dep ensure
@@ -31,8 +29,8 @@ vendor:
 clean:
 	rm -rf dist
 
-release: vendor clean
+release: clean test
 	goreleaser
 
-snapshot: vendor clean
+snapshot: clean test
 	goreleaser --snapshot
