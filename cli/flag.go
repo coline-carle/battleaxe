@@ -49,10 +49,10 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	flagset.StringVar(&flags.locale, "locale", "", usage)
 	flagset.StringVar(&flags.locale, "l", "", usage)
 
-	flagset.StringVar(&flags.clientID, "clientid", "", usage)
-	flagset.StringVar(&flags.clientID, "i", "", usage)
+	flagset.StringVar(&flags.clientID, "client", "", usage)
+	flagset.StringVar(&flags.clientID, "k", "", usage)
 
-	flagset.StringVar(&flags.clientSecret, "client_secret", "", usage)
+	flagset.StringVar(&flags.clientSecret, "secret", "", usage)
 	flagset.StringVar(&flags.clientSecret, "s", "", usage)
 
 	flagset.StringVar(&flags.fields, "fields", "", usage)

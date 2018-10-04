@@ -1,37 +1,15 @@
 package cli
 
-import "testing"
-
-func compareAppFlags(a *appFlags, b *appFlags) bool {
-	if a.locale != b.locale {
-		return false
-	}
-	if a.fields != b.fields {
-		return false
-	}
-	if a.clientID != b.clientID {
-		return false
-	}
-	if a.clientSecret != b.clientSecret {
-		return false
-	}
-	if a.head != b.head {
-		return false
-	}
-	if a.human != b.human {
-		return false
-	}
-	if a.version != b.version {
-		return false
-	}
-	return true
-}
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestParseCommand(t *testing.T) {
 	var tests = []struct {
-		in       []string
-		outFlags *appFlags
-		outURL   string
+		in            []string
+		expectedFlags *appFlags
+		expectedURL   string
 	}{
 		{
 			[]string{"url"},
@@ -47,7 +25,7 @@ func TestParseCommand(t *testing.T) {
 			"url",
 		},
 		{
-			[]string{"--apikey=1234", "url"},
+			[]string{"--client=1234", "url"},
 			&appFlags{
 				locale:       "",
 				fields:       "",
@@ -60,12 +38,12 @@ func TestParseCommand(t *testing.T) {
 			"url",
 		},
 		{
-			[]string{"url", "--apikey=456"},
+			[]string{"url", "--client=456", "--secret=secret"},
 			&appFlags{
 				locale:       "",
 				fields:       "",
-				clientID:     "1234",
-				clientSecret: "",
+				clientID:     "456",
+				clientSecret: "secret",
 				head:         false,
 				human:        false,
 				version:      false,
@@ -73,12 +51,12 @@ func TestParseCommand(t *testing.T) {
 			"url",
 		},
 		{
-			[]string{"--apikey=123", "url", "--apikey=456"},
+			[]string{"--client=123", "--secret=secret", "url", "--client=456"},
 			&appFlags{
 				locale:       "",
 				fields:       "",
-				clientID:     "1234",
-				clientSecret: "",
+				clientID:     "456",
+				clientSecret: "secret",
 				head:         false,
 				human:        false,
 				version:      false,
@@ -87,22 +65,21 @@ func TestParseCommand(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		outFlags, outURL, err := parseCommand(test.in)
+		flags, url, err := parseCommand(test.in)
 		if err != nil {
 			t.Errorf("parseCommand(%q)\n- want:\n%v\n%v\n- got:\n error: %v\n",
-				test.in, test.outFlags, test.outURL, err)
-		} else if outURL != test.outURL || !compareAppFlags(outFlags, test.outFlags) {
-			t.Errorf("parseCommand(%q)\n- want:\nflags=%v\nurl=%v\n- got:\nflags=%v\nurl=%v\n",
-				test.in, test.outFlags, test.outURL, outFlags, outURL)
+				test.in, test.expectedFlags, test.expectedURL, err)
 		}
+		assert.Equal(t, test.expectedURL, url)
+		assert.Equal(t, test.expectedFlags, flags)
 	}
 }
 
 func TestParseCommandError(t *testing.T) {
 	var tests = [][]string{
-		{"--clientid&=123"},
-		{"--clientid=123", "url1", "url2"},
-		{"--clientid=123", "url1", "url2", "--clientid=456"},
+		{"--client=123"},
+		{"--client=123", "url1", "url2"},
+		{"--client=123", "url1", "url2", "--client=456"},
 	}
 	for _, test := range tests {
 		outFlags, outURL, err := parseCommand(test)
