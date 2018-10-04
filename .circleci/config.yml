@@ -3,9 +3,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
 
-    working_directory: /go/src/github.com/wow-sweetlie/battleaxe
+    working_directory: /go/src/github.com/coline-carle²/battleaxe
     steps:
       - checkout
 
