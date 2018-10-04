@@ -8,22 +8,22 @@ import (
 
 const (
 	// USHost : United-States endpoint
-	usHost = "us.api.battle.net"
+	usHost = "us.api.blizzard.com"
 
 	// EUHost : Europe endpoint
-	euHost = "eu.api.battle.net"
+	euHost = "eu.api.blizzard.com"
 
 	// KRHost : Korea endpoint
-	krHost = "kr.api.battle.net"
+	krHost = "kr.api.blizzard.com"
 
 	// TWHost : Taiwan endpoint
-	twHost = "tw.api.battle.net"
+	twHost = "tw.api.blizzard.com"
 
 	// CNHost : China endpoint
 	cnHost = "api.battlenet.com.cn"
 
 	// SEAHost : South East Asia endpoint
-	seaHost = "sea.api.battle.net"
+	seaHost = "sea.api.blizzard.com"
 )
 
 // knwon and parsed Fields

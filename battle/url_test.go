@@ -10,17 +10,17 @@ func TestParseURLWithGame(t *testing.T) {
 	}{
 		{
 			"eu://achievement/2144?locale=en_US&apikey=APIKEY",
-			"https://eu.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			"https://eu.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=en_US",
 			WoW,
 		},
 		{
 			"achievement://2144?locale=en_US&apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=en_US",
 			WoW,
 		},
 		{
 			"character://Archimonde/Sweetlie",
-			"https://us.api.battle.net/wow/character/Archimonde/Sweetlie",
+			"https://us.api.blizzard.com/wow/character/Archimonde/Sweetlie",
 			WoW,
 		},
 	}
@@ -40,28 +40,28 @@ func TestParseURL(t *testing.T) {
 		out string
 	}{
 		{
-			"https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			"https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=en_US",
 		},
 		{
-			"http://us.api.battle.net/wow/achievement/2144",
-			"https://us.api.battle.net/wow/achievement/2144",
+			"http://us.api.blizzard.com/wow/achievement/2144",
+			"https://us.api.blizzard.com/wow/achievement/2144",
 		},
 		{
 			"us://wow/achievement/2144?locale=en_US&apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=en_US",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=en_US",
 		},
 		{
 			"us://wow/achievement/2144",
-			"https://us.api.battle.net/wow/achievement/2144",
+			"https://us.api.blizzard.com/wow/achievement/2144",
 		},
 		{
 			"eu://wow/achievement/2144",
-			"https://eu.api.battle.net/wow/achievement/2144",
+			"https://eu.api.blizzard.com/wow/achievement/2144",
 		},
 		{
 			"wow://achievement/2144",
-			"https://us.api.battle.net/wow/achievement/2144",
+			"https://us.api.blizzard.com/wow/achievement/2144",
 		},
 	}
 	for _, test := range tests {
@@ -81,22 +81,22 @@ func TestParseURLWithOverride(t *testing.T) {
 		override map[string]string
 	}{
 		{
-			"https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=fr_FR",
+			"https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=fr_FR",
 			map[string]string{
 				"locale": "fr_FR",
 			},
 		},
 		{
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY&locale=fr_FR",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY&locale=fr_FR",
 			map[string]string{
 				"locale": "fr_FR",
 			},
 		},
 		{
-			"https://us.api.battle.net/wow/achievement/2144?apikey=APIKEY",
-			"https://us.api.battle.net/wow/achievement/2144?apikey=mykey&locale=fr_FR",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=APIKEY",
+			"https://us.api.blizzard.com/wow/achievement/2144?apikey=mykey&locale=fr_FR",
 			map[string]string{
 				"locale": "fr_FR",
 				"apikey": "mykey",

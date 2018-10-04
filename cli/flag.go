@@ -8,7 +8,8 @@ import (
 type appFlags struct {
 	locale string
 	fields string
-	apikey string
+	clientID string
+	clientSecret string
 
 	head    bool
 	human   bool
@@ -28,7 +29,8 @@ func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 	return &appFlags{
 		locale:  firstString(afterFlags.locale, flags.locale),
 		fields:  firstString(afterFlags.fields, flags.fields),
-		apikey:  firstString(afterFlags.apikey, flags.apikey),
+		clientID:  firstString(afterFlags.clientID, flags.clientID),
+		clientSecret:  firstString(afterFlags.clientSecret, flags.clientSecret),
 		head:    flags.head || afterFlags.head,
 		human:   flags.human || afterFlags.human,
 		version: flags.version || afterFlags.version,
@@ -47,8 +49,11 @@ func parseFlags(args []string) (*appFlags, []string, error) {
 	flagset.StringVar(&flags.locale, "locale", "", usage)
 	flagset.StringVar(&flags.locale, "l", "", usage)
 
-	flagset.StringVar(&flags.apikey, "apikey", "", usage)
-	flagset.StringVar(&flags.apikey, "k", "", usage)
+	flagset.StringVar(&flags.clientID, "clientid", "", usage)
+	flagset.StringVar(&flags.clientID, "i", "", usage)
+
+	flagset.StringVar(&flags.clientSecret, "client_secret", "", usage)
+	flagset.StringVar(&flags.clientSecret, "s", "", usage)
 
 	flagset.StringVar(&flags.fields, "fields", "", usage)
 	flagset.StringVar(&flags.fields, "f", "", usage)

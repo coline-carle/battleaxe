@@ -26,22 +26,22 @@ func PrintVersion() {
 // PrintBody : print response body
 func PrintBody(resp *http.Response, pretty bool) error {
 	defer resp.Body.Close()
+	var err error
 	if pretty {
 		b := new(bytes.Buffer)
 		b.ReadFrom(resp.Body)
 		f := jsoncolor.NewFormatter()
-		err := f.Format(os.Stdout, b.Bytes())
-		if err != nil {
-			return err
+		err = f.Format(os.Stdout, b.Bytes())
+	} else {
+		_, err = io.Copy(os.Stdout, resp.Body)
+		// add a newline at the end
+		if err == nil {
+			fmt.Println("")
 		}
-		os.Exit(0)
-	}
-	_, err := io.Copy(os.Stdout, resp.Body)
-	if err != nil {
-		return err
 	}
 
-	return nil
+
+	return err
 }
 
 // PrintHeader : print response header

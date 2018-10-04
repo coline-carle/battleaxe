@@ -9,7 +9,10 @@ func compareAppFlags(a *appFlags, b *appFlags) bool {
 	if a.fields != b.fields {
 		return false
 	}
-	if a.apikey != b.apikey {
+	if a.clientID != b.clientID {
+		return false
+	}
+	if a.clientSecret != b.clientSecret {
 		return false
 	}
 	if a.head != b.head {
@@ -35,7 +38,8 @@ func TestParseCommand(t *testing.T) {
 			&appFlags{
 				locale:  "",
 				fields:  "",
-				apikey:  "",
+				clientID:  "",
+				clientSecret:  "",
 				head:    false,
 				human:   false,
 				version: false,
@@ -47,7 +51,8 @@ func TestParseCommand(t *testing.T) {
 			&appFlags{
 				locale:  "",
 				fields:  "",
-				apikey:  "1234",
+				clientID:  "1234",
+				clientSecret:  "",
 				head:    false,
 				human:   false,
 				version: false,
@@ -59,7 +64,8 @@ func TestParseCommand(t *testing.T) {
 			&appFlags{
 				locale:  "",
 				fields:  "",
-				apikey:  "456",
+				clientID:  "1234",
+				clientSecret:  "",
 				head:    false,
 				human:   false,
 				version: false,
@@ -71,7 +77,8 @@ func TestParseCommand(t *testing.T) {
 			&appFlags{
 				locale:  "",
 				fields:  "",
-				apikey:  "456",
+				clientID:  "1234",
+				clientSecret:  "",
 				head:    false,
 				human:   false,
 				version: false,
@@ -93,9 +100,9 @@ func TestParseCommand(t *testing.T) {
 
 func TestParseCommandError(t *testing.T) {
 	var tests = [][]string{
-		{"--apikey=123"},
-		{"--apikey=123", "url1", "url2"},
-		{"--apikey=123", "url1", "url2", "--apikey=456"},
+		{"--clientid&=123"},
+		{"--clientid=123", "url1", "url2"},
+		{"--clientid=123", "url1", "url2", "--clientid=456"},
 	}
 	for _, test := range tests {
 		outFlags, outURL, err := parseCommand(test)

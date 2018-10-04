@@ -1,7 +1,7 @@
 # battleaxe
 [![CircleCI](https://circleci.com/gh/coline-carle/battleaxe.svg?style=svg)](https://circleci.com/gh/coline-carle/battleaxe)
 
-battleaxe is an opiniated terminal client for Battle.NET community API
+battleaxe is an opiniated terminal client for blizzard.com community API
 
 ## The storyline
 
@@ -9,19 +9,19 @@ battleaxe is an opiniated terminal client for Battle.NET community API
   BATTLENET_CLIENT_ID env variable
 
 ```
-battleaxe  "https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY"
+battleaxe  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY"
 ```
 
 * Maybe you haven't set-up yet the env variale, so let's add an argument
 
 ```
-battleaxe  "https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY" --apikey myapikey
+battleaxe  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY" --apikey myapikey
 ```
 
 * Nah let's put apikey flag first
 
 ```
-battleaxe -k myapikey  "https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY"
+battleaxe -k myapikey  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY"
 ```
 
 * To verbose let's use the axe
@@ -80,7 +80,7 @@ USAGE:
 
 DESCRIPTION:
         examples of urls:
-          https://us.api.battle.net/wow/achievement/2144?locale=en_US&apikey=APIKEY
+          https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY
           us://wow/achievement/2144
           wow://achievement/2144
 
@@ -108,15 +108,15 @@ VERSION:
 ```
 ## Releases
 
-https://github.com/wow-sweetlie/battleaxe/releases
+https://github.com/coline-carle/battleaxe/releases
 
 if go is installed and configured, you can get master of one one the tool like
 this :
 
-* go get -U github.com/wow-sweetlie/battleaxe/cmd/battleaxe
-* go get -U github.com/wow-sweetlie/battleaxe/cmd/wowaxe
-* go get -U github.com/wow-sweetlie/battleaxe/cmd/daxe
-* go get -U github.com/wow-sweetlie/battleaxe/cmd/scaxe
+* go get -U github.com/coline-carle/battleaxe/cmd/battleaxe
+* go get -U github.com/coline-carle/battleaxe/cmd/wowaxe
+* go get -U github.com/coline-carle/battleaxe/cmd/daxe
+* go get -U github.com/coline-carle/battleaxe/cmd/scaxe
 
 
 

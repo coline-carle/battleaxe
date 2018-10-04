@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/wow-sweetlie/battleaxe/battle"
-	"github.com/wow-sweetlie/battleaxe/cli"
+	"github.com/coline-carle/battleaxe/battle"
+	"github.com/coline-carle/battleaxe/cli"
 )
 
 func main() {

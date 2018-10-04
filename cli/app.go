@@ -3,10 +3,11 @@ package cli
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
+	"golang.org/x/oauth2/clientcredentials"
+	"golang.org/x/oauth2"
 
-	"github.com/wow-sweetlie/battleaxe/battle"
+	"github.com/coline-carle/battleaxe/battle"
 )
 
 // Version of the app
@@ -44,10 +45,6 @@ func buildQueryMap(f *appFlags) map[string]string {
 		queryMap["fields"] = f.fields
 	}
 
-	if f.apikey != "" {
-		queryMap["apikey"] = f.apikey
-	}
-
 	return queryMap
 }
 
@@ -76,12 +73,44 @@ func Run(game battle.Game, args []string) {
 		os.Exit(0)
 	}
 
-	// if apikey not set try to fetch it from env
-	if flags.apikey == "" {
-		flags.apikey = os.Getenv("BATTLENET_CLIENT_ID")
+
+	var clientID string
+	if flags.clientID == "" {
+		clientID = os.Getenv("BLIZZARD_CLIENT_ID")
+	} else {
+		clientID = flags.clientID 
+	}
+
+	var clientSecret string
+	if flags.clientSecret == "" {
+		clientSecret = os.Getenv("BLIZZARD_CLIENT_SECRET")
+	} else {
+		clientSecret = flags.clientSecret 
+	}
+
+	if clientID == "" {
+		logger.Println("clientID can't be empty use --clientid flag or BLIZZARD_CLIENT_ID env variable")
+	}
+
+	if clientSecret == "" {
+		logger.Println("clientSecret can't be empty use --clientid flag or BLIZZARD_CLIENT_SECRET env variable")
+	}
+
+	// if client secret is  not set try to fetch it from env
+	if flags.clientID == "" {
+		flags.clientSecret = os.Getenv("BLIZZARD_CLIENT_ID")
 	}
 
 	queryMap := buildQueryMap(flags)
+
+	blizzOauth := &clientcredentials.Config{
+		ClientID:     clientID,
+    ClientSecret: clientSecret,
+		TokenURL: "https://us.battle.net/oauth/token",
+	}
+
+	client := blizzOauth.Client(oauth2.NoContext)
+
 
 	url, err := battle.ParseURL(inURL, queryMap, game)
 
@@ -94,7 +123,7 @@ func Run(game battle.Game, args []string) {
 		os.Exit(0)
 	}
 
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		logger.Fatal(err)
 	}
