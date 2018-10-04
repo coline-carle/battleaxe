@@ -6,9 +6,9 @@ import (
 )
 
 type appFlags struct {
-	locale string
-	fields string
-	clientID string
+	locale       string
+	fields       string
+	clientID     string
 	clientSecret string
 
 	head    bool
@@ -27,15 +27,15 @@ func firstString(a string, b string) string {
 
 func mergeFlags(flags *appFlags, afterFlags *appFlags) *appFlags {
 	return &appFlags{
-		locale:  firstString(afterFlags.locale, flags.locale),
-		fields:  firstString(afterFlags.fields, flags.fields),
-		clientID:  firstString(afterFlags.clientID, flags.clientID),
-		clientSecret:  firstString(afterFlags.clientSecret, flags.clientSecret),
-		head:    flags.head || afterFlags.head,
-		human:   flags.human || afterFlags.human,
-		version: flags.version || afterFlags.version,
-		dry:     flags.dry || afterFlags.dry,
-		help:    flags.help || afterFlags.help,
+		locale:       firstString(afterFlags.locale, flags.locale),
+		fields:       firstString(afterFlags.fields, flags.fields),
+		clientID:     firstString(afterFlags.clientID, flags.clientID),
+		clientSecret: firstString(afterFlags.clientSecret, flags.clientSecret),
+		head:         flags.head || afterFlags.head,
+		human:        flags.human || afterFlags.human,
+		version:      flags.version || afterFlags.version,
+		dry:          flags.dry || afterFlags.dry,
+		help:         flags.help || afterFlags.help,
 	}
 }
 

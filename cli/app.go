@@ -2,10 +2,10 @@ package cli
 
 import (
 	"fmt"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/clientcredentials"
 	"log"
 	"os"
-	"golang.org/x/oauth2/clientcredentials"
-	"golang.org/x/oauth2"
 
 	"github.com/coline-carle/battleaxe/battle"
 )
@@ -73,19 +73,18 @@ func Run(game battle.Game, args []string) {
 		os.Exit(0)
 	}
 
-
 	var clientID string
 	if flags.clientID == "" {
 		clientID = os.Getenv("BLIZZARD_CLIENT_ID")
 	} else {
-		clientID = flags.clientID 
+		clientID = flags.clientID
 	}
 
 	var clientSecret string
 	if flags.clientSecret == "" {
 		clientSecret = os.Getenv("BLIZZARD_CLIENT_SECRET")
 	} else {
-		clientSecret = flags.clientSecret 
+		clientSecret = flags.clientSecret
 	}
 
 	if clientID == "" {
@@ -105,12 +104,11 @@ func Run(game battle.Game, args []string) {
 
 	blizzOauth := &clientcredentials.Config{
 		ClientID:     clientID,
-    ClientSecret: clientSecret,
-		TokenURL: "https://us.battle.net/oauth/token",
+		ClientSecret: clientSecret,
+		TokenURL:     "https://us.battle.net/oauth/token",
 	}
 
 	client := blizzOauth.Client(oauth2.NoContext)
-
 
 	url, err := battle.ParseURL(inURL, queryMap, game)
 

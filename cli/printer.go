@@ -40,7 +40,6 @@ func PrintBody(resp *http.Response, pretty bool) error {
 		}
 	}
 
-
 	return err
 }
 
