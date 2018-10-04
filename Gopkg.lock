@@ -2,38 +2,64 @@
 
 
 [[projects]]
+  digest = "1:c9bebdae4ac52d0c3bbe5876de3d72f3bb05b4986865cdb3f15e305e1dc4fbca"
   name = "github.com/fatih/color"
   packages = ["."]
+  pruneopts = ""
   revision = "570b54cabe6b8eb0bc2dfce68d964677d63b5260"
   version = "v1.5.0"
 
 [[projects]]
+  digest = "1:9ea83adf8e96d6304f394d40436f2eb44c1dc3250d223b74088cc253a6cd0a1c"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
+  pruneopts = ""
   revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
   version = "v0.0.9"
 
 [[projects]]
+  digest = "1:78229b46ddb7434f881390029bd1af7661294af31f6802e0e1bedaad4ab0af3c"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
+  pruneopts = ""
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
 
 [[projects]]
   branch = "master"
+  digest = "1:2e365b420bb2337d21c743ec4541eb6da43b7475d7ae11f757b32a17f61fda3b"
   name = "github.com/nwidger/jsoncolor"
   packages = ["."]
+  pruneopts = ""
   revision = "75a6de4340e59be95f0884b9cebdda246e0fdf40"
 
 [[projects]]
+  digest = "1:99ade78bf17b4dd42377d09ef811fba1202858cfbb170045fc289da830c0417a"
+  name = "github.com/wow-sweetlie/battleaxe"
+  packages = [
+    "battle",
+    "cli",
+  ]
+  pruneopts = ""
+  revision = "3ec7291becd0445ccf085daabce70ce3b6bc09c7"
+  version = "v0.0.2"
+
+[[projects]]
   branch = "master"
+  digest = "1:214861987138c7a919536c43586058258d6dd935d3dff0aed48855f211c732ee"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = ""
   revision = "b8f5ef32195cae6470b728e8ca677f0dbed1a004"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8ee8b97c17d8731c33465163d97c085101bafd707b8c58d873d84cf78c3c88cc"
+  input-imports = [
+    "github.com/fatih/color",
+    "github.com/nwidger/jsoncolor",
+    "github.com/wow-sweetlie/battleaxe/battle",
+    "github.com/wow-sweetlie/battleaxe/cli",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
