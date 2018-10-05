@@ -8,15 +8,25 @@ jobs:
     working_directory: /go/src/github.com/coline-carle/battleaxe
     steps:
       - checkout
-
       - run: go get github.com/golang/dep/cmd/dep
       - run: go get golang.org/x/lint/golint
       - run: dep ensure
-
       - run: make test
-	release:
+
+  release:
     docker:
       - image: circleci/golang:1.11
     steps:
       - checkout
       - run: curl -sL https://git.io/goreleaser | bash
+workflows:
+  version: 2
+  release:
+      jobs:
+        - test
+        - release:
+            filters:
+              branches:
+                ignore: /.*/
+              tags:
+                only: /v[0-9]+(\.[0-9]+)*(-.*)*/
