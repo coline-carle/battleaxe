@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	usageLocale       = "game locale exemple: en_US"
+	usageLocale       = "game locale example: en_US"
 	usageClientID     = "blizzard API client id, environnement variable BLIZZARD_CLIENT_ID is used by default if unset"
 	usageClientSecret = "blizzard API client secret, environnement variable BLIZZARD_CLIENT_SECRET is used by default if unset"
 	usageHuman        = "humanize response with color and indentation"
@@ -109,7 +109,7 @@ var generalFlags = []FlagHelp{
 	},
 }
 
-var urlExemples = map[string][]string{
+var urlExamples = map[string][]string{
 	"battleaxe": {
 		"https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY",
 		"us://wow/achievement/2144",
@@ -144,7 +144,7 @@ func PrintHelp() error {
 		GeneralFlags: generalFlags,
 		QueryFlags:   queryFlags,
 		Apps:         []string{"battleaxe", "wowaxe", "scaxe", "daxe"},
-		Examples:     urlExemples[appName],
+		Examples:     urlExamples[appName],
 		Usage:        "[OPTIONS] scheme://path/to/resource [MORE OPTIONS]",
 		Version:      Version,
 	}
