@@ -52,21 +52,6 @@ archive:
   files:
     - README.md
     - LICENSE
-brew:
-  github:
-    owner: coline-carle
-    name: homebrew-tap
-
-  folder: Formula
-
-  description: "Terminal blizzard API client"
-
-nfpm:
-  homepage: https://github.com/wow-sweetlie/battleaxe
-  maintainer: Coline Carle <coline.carle@gmail.com>
-  formats:
-    - deb
-    - rpm
 
 release:
   prerelease: true
