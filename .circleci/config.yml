@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/golang:1.11
 
-    working_directory: /go/src/github.com/coline-carle²/battleaxe
+    working_directory: /go/src/github.com/coline-carle/battleaxe
     steps:
       - checkout
 
@@ -14,3 +14,9 @@ jobs:
       - run: dep ensure
 
       - run: make test
+	release:
+    docker:
+      - image: circleci/golang:1.11
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash

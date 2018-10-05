@@ -54,16 +54,16 @@ archive:
     - LICENSE
 brew:
   github:
-    owner: wow-sweetlie
+    owner: coline-carle
     name: homebrew-tap
 
   folder: Formula
 
-  description: "Terminal battle.net API client"
+  description: "Terminal blizzard API client"
 
-fpm:
+nfpm:
   homepage: https://github.com/wow-sweetlie/battleaxe
-  maintainer: Sweetlie <sweetlie@wipeinc.io>
+  maintainer: Coline Carle <coline.carle@gmail.com>
   formats:
     - deb
     - rpm
