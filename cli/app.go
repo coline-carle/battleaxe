@@ -19,9 +19,6 @@ const Version = "0.0.2"
 // OauthTokenURL blizard oauth2 url to fetch token
 const OauthTokenURL = "https://us.battle.net/oauth/token"
 
-const errPrintHelp = "Error: '%s'. use --help flag for usage"
-const errExit = "Error: '%s'"
-
 var logger *log.Logger
 var errClientIDEmpty = errors.New("client id can't be empty")
 var errClientSecretEmpty = errors.New("client secret can't be empty")
@@ -67,39 +64,6 @@ func buildQueryMap(f *appFlags) map[string]string {
 	return queryMap
 }
 
-func newApp(game battle.Game, args []string) (*app, error) {
-	a := &app{
-		game: game,
-	}
-	flags, url, err := parseCommand(args[1:])
-	if err != nil {
-		return a, err
-	}
-
-	if flags.version {
-		PrintVersion()
-		os.Exit(0)
-	}
-
-	if flags.help {
-		err = PrintHelp(AppName(game))
-		if err != nil {
-			logger.Fatal(err)
-		}
-		os.Exit(0)
-	}
-
-	a.flags = flags
-
-	if flags.dry {
-		fmt.Println(url)
-		os.Exit(0)
-	}
-
-	a.inURL = url
-	return a, nil
-}
-
 func buildURL(url string, game battle.Game, flags *appFlags) (string, error) {
 	queryMap := buildQueryMap(flags)
 
@@ -140,29 +104,29 @@ func buildClient(clientID string, clientSecret string) *http.Client {
 	return blizzOauth.Client(oauth2.NoContext)
 }
 
-func doRun(game battle.Game, args []string) error {
+func doRun(game battle.Game, args []string) (printHelp bool, err error) {
 	flags, url, err := parseCommand(args[1:])
 	if err != nil {
-		return fmt.Errorf(errPrintHelp, err)
+		return true, err
 	}
 
 	if err != nil {
-		return fmt.Errorf(errPrintHelp, err)
+		return true, err
 	}
 
 	url, err = buildURL(url, game, flags)
 	if err != nil {
-		return fmt.Errorf(errPrintHelp, err)
+		return true, err
 	}
 
 	if flags.dry {
 		fmt.Println(url)
-		return nil
+		return true, err
 	}
 
 	clientID, clientSecret, err := getCredentials(flags)
 	if err != nil {
-		return fmt.Errorf(errPrintHelp, err)
+		return true, err
 	}
 
 	client := buildClient(clientID, clientSecret)
@@ -170,31 +134,27 @@ func doRun(game battle.Game, args []string) error {
 
 	if flags.head {
 		PrintHeader(resp)
-		return nil
+		return false, err
 	}
 
 	if flags.help {
-		err = PrintHelp(AppName(game))
-		if err != nil {
-			return fmt.Errorf(errExit, err)
-		}
-		return nil
+		_ = PrintHelp()
+		return false, nil
 	}
 
 	err = PrintBody(resp, flags.human)
-	if err != nil {
-		return fmt.Errorf(errExit, err)
-	}
 
-	return nil
+	return false, err
 }
 
 // Run the app
 func Run(game battle.Game, args []string) {
-	err := doRun(game, args)
+	printHelp, err := doRun(game, args)
 	if err != nil {
 		logger.Println(err)
-		os.Exit(-1)
+	}
+	if printHelp {
+		PrintHelp()
 	}
 	os.Exit(0)
 }

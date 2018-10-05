@@ -6,9 +6,20 @@ import (
 	"text/template"
 )
 
-var appHelpTemplate = `NAME:
-  {{.Name}}
+const (
+	usageLocale       = "game locale exemple: en_US"
+	usageClientID     = "blizzard API client id, environnement variable BLIZZARD_CLIENT_ID is used by default if unset"
+	usageClientSecret = "blizzard API client secret, environnement variable BLIZZARD_CLIENT_SECRET is used by default if unset"
+	usageHuman        = "humanize response with color and indentation"
+	usagePretty       = usageHuman + " (same as --human)"
+	usageHead         = "print headers instead of body"
+	usageVersion      = "show version"
+	usageDry          = "print the url that would be request instead of fetching it"
+	usageHelp         = "show this help"
+	usageFields       = "set optional fields for the requested endpoint"
+)
 
+var appHelpTemplate = `
 USAGE:
   {{.Name}} {{.Usage}}
 
@@ -54,43 +65,47 @@ type AppHelp struct {
 
 var queryFlags = []FlagHelp{
 	{
-		[]string{"client", "k"},
-		"your personal client id, environnement variable BLIZZARD_CLIENT_ID is used by default if unset",
+		[]string{"client", "K"},
+		usageClientID,
 	},
 	{
-		[]string{"secret", "s"},
-		"your personal client secret, environnement variable BLIZZARD_CLIENT_SECRET is used by default if unset",
+		[]string{"secret", "S"},
+		usageClientSecret,
 	},
 	{
-		[]string{"fields", "f"},
-		"set fields for endpoint that accept ones",
+		[]string{"fields", "F"},
+		usageFields,
 	},
 	{
-		[]string{"locale", "l"},
-		"game locale ex: en_US",
+		[]string{"locale", "L"},
+		usageLocale,
 	},
 }
 
 var generalFlags = []FlagHelp{
 	{
 		[]string{"head", "I"},
-		"print headers instead of body",
+		usageHead,
 	},
 	{
-		[]string{"color", "C"},
-		"humanize response with color and indentation",
+		[]string{"human", "C"},
+		usageHuman,
+	},
+	{
+		[]string{"pretty"},
+		usageHuman + " (same as human)",
 	},
 	{
 		[]string{"version", "V"},
-		"show version",
+		usageVersion,
 	},
 	{
 		[]string{"dry", "D"},
-		"only print the url that would be requested",
+		usageDry,
 	},
 	{
 		[]string{"help", "usage"},
-		"show this help",
+		usageHelp,
 	},
 }
 
@@ -118,16 +133,18 @@ var urlExemples = map[string][]string{
 }
 
 // PrintHelp : ...
-func PrintHelp(appname string) error {
+func PrintHelp() error {
 	funcMap := template.FuncMap{
 		"join": strings.Join,
 	}
+
+	appName := os.Args[0]
 	help := &AppHelp{
-		Name:         appname,
+		Name:         appName,
 		GeneralFlags: generalFlags,
 		QueryFlags:   queryFlags,
 		Apps:         []string{"battleaxe", "wowaxe", "scaxe", "daxe"},
-		Examples:     urlExemples[appname],
+		Examples:     urlExemples[appName],
 		Usage:        "[OPTIONS] scheme://path/to/resource [MORE OPTIONS]",
 		Version:      Version,
 	}
