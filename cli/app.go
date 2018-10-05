@@ -14,7 +14,7 @@ import (
 )
 
 // Version of the app
-const Version = "0.0.8"
+const Version = "0.0.9"
 
 // OauthTokenURL blizard oauth2 url to fetch token
 const OauthTokenURL = "https://us.battle.net/oauth/token"
