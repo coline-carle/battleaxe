@@ -30,7 +30,6 @@ const (
 const (
 	queryLocale = "locale"
 	queryFields = "fields"
-	queryAPIKey = "apikey"
 )
 
 const (

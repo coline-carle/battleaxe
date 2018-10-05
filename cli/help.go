@@ -54,8 +54,12 @@ type AppHelp struct {
 
 var queryFlags = []FlagHelp{
 	{
-		[]string{"apikey", "k"},
-		"your personal api key variable env BATTLENET_CLIENT_ID is used by default if set",
+		[]string{"client", "k"},
+		"your personal client id, environnement variable BLIZZARD_CLIENT_ID is used by default if unset",
+	},
+	{
+		[]string{"secret", "s"},
+		"your personal client secret, environnement variable BLIZZARD_CLIENT_SECRET is used by default if unset",
 	},
 	{
 		[]string{"fields", "f"},
