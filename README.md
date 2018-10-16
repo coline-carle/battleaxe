@@ -23,18 +23,10 @@ wowaxe  us://achievement/2144
 ````
 
 ## binaries
-
-battleaxe come with few executables for querying battlenet API
-
-Here are their kind names:
-
 - battleaxe (All games endpoints)
 - wowaxe (World of Warcraft enpoint)
 - scaxe (Starcraft 2 endpoint)
 - daxe (Diablo 3 endpoint)
-
-Be gentle with them, I crafted them with love.
-
 ## Usage
 
 ```
