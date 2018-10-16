@@ -63,10 +63,10 @@ https://github.com/coline-carle/battleaxe/releases
 if go is installed and configured, you can get master of one one the tool like
 this :
 
-* go get -U github.com/coline-carle/battleaxe/cmd/battleaxe
-* go get -U github.com/coline-carle/battleaxe/cmd/wowaxe
-* go get -U github.com/coline-carle/battleaxe/cmd/daxe
-* go get -U github.com/coline-carle/battleaxe/cmd/scaxe
+* go get -u github.com/coline-carle/battleaxe/cmd/battleaxe
+* go get -u github.com/coline-carle/battleaxe/cmd/wowaxe
+* go get -u github.com/coline-carle/battleaxe/cmd/daxe
+* go get -u github.com/coline-carle/battleaxe/cmd/scaxe
 
 
 
