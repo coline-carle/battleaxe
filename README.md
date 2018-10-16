@@ -1,7 +1,7 @@
 
 [![CircleCI](https://circleci.com/gh/coline-carle/battleaxe.svg?style=svg)](https://circleci.com/gh/coline-carle/battleaxe)
 
-battleaxe is an opiniated terminal client for blizzard.com community API
+opiniated terminal client for blizzard.com community API
 
 ## configuration
 ```sh
