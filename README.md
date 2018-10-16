@@ -15,6 +15,7 @@ export BLIZZARD_CLIENT_SECRET="..."
 battleaxe  us://wow/achievement/2144
 battleaxe wow://achievement/2144
 wowaxe  us://achievement/2144
+wowaxe achievment://2144
 ```
 
 ## binaries
