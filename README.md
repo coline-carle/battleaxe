@@ -15,7 +15,7 @@ export BLIZZARD_CLIENT_SECRET="..."
 battleaxe  us://wow/achievement/2144
 battleaxe wow://achievement/2144
 wowaxe  us://achievement/2144
-````
+```
 
 ## binaries
 - battleaxe (All games endpoints)
@@ -56,18 +56,19 @@ VERSION:
   0.0.10
 
 ```
+
 ## Releases
 
 https://github.com/coline-carle/battleaxe/releases
 
-if go is installed and configured, you can get master of one one the tool like
-this :
+or
 
-* go get -u github.com/coline-carle/battleaxe/cmd/battleaxe
-* go get -u github.com/coline-carle/battleaxe/cmd/wowaxe
-* go get -u github.com/coline-carle/battleaxe/cmd/daxe
-* go get -u github.com/coline-carle/battleaxe/cmd/scaxe
-
+```
+go get -u github.com/coline-carle/battleaxe/cmd/battleaxe
+go get -u github.com/coline-carle/battleaxe/cmd/wowaxe
+go get -u github.com/coline-carle/battleaxe/cmd/daxe
+go get -u github.com/coline-carle/battleaxe/cmd/scaxe
+```
 
 
 ## License
