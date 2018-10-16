@@ -3,58 +3,24 @@
 
 battleaxe is an opiniated terminal client for blizzard.com community API
 
+## configuration
+export BLIZZARD_CLIENT_ID="..."
+export BLIZZARD_CLIENT_SECRET="..."
+
+
 ## The storyline
 
-* it can ask raw url, replacing APIKEY placeholder by your pre-configured
-  BATTLENET_CLIENT_ID env variable
-
 ```
-battleaxe  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY"
-```
-
-* Maybe you haven't set-up yet the env variale, so let's add an argument
-
-```
-battleaxe  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY" --apikey myapikey
-```
-
-* Nah let's put apikey flag first
-
-```
-battleaxe -k myapikey  "https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY"
-```
-
-* To verbose let's use the axe
-
-```
-battleaxe -k myapikey  us://wow/achievement/2144
+battleaxe  us://wow/achievement/2144
 ````
 
-* Shorter ! Can we do better ? Region doesn't matter to get the English
-  locale of an achievement, let's use the default endpoint (US)
-
 ```
-battleaxe -k myapikey  wow://achievement/2144
+battleaxe wow://achievement/2144
 ````
 
-* Come to think of it, I'm only using World of Warcraft API
-
 ```
-wowaxe -k myapikey  us://achievement/2144
+wowaxe  us://achievement/2144
 ````
-
-* It's time to setup the env var
-
-```
-export BATTLENET_CLIENT_ID=myapikey
-````
-
-* End of Story
-
-```
-wowaxe achievement://2144
-```
-
 
 ## binaries
 
