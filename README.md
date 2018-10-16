@@ -30,39 +30,36 @@ wowaxe  us://achievement/2144
 ## Usage
 
 ```
-NAME:
-  battleaxe
-
 USAGE:
   battleaxe [OPTIONS] scheme://path/to/resource [MORE OPTIONS]
 
 DESCRIPTION:
         examples of urls:
-          https://us.api.blizzard.com/wow/achievement/2144?locale=en_US&apikey=APIKEY
-          us://wow/achievement/2144
-          wow://achievement/2144
 
         Golden rule: Flags that modify query options, always take precedence
         over the query option of the url. In case of multiple definition of the same
         flag: The rightest flag win.
 
 QUERY OPTIONS:
-  apikey, k     your personal api key variable env BATTLENET_CLIENT_ID is used by default if set
-  fields, f     set fields for endpoint that accept ones
-  locale, l     game locale ex: en_US
+  client, K     blizzard API client id, environnement variable BLIZZARD_CLIENT_ID is used by default if unset
+  secret, S     blizzard API client secret, environnement variable BLIZZARD_CLIENT_SECRET is used by default if unset
+  fields, F     set optional fields for the requested endpoint
+  locale, L     game locale example: en_US
 
 GLOBAL OPTIONS:
   head, I       print headers instead of body
-  color, C      humanize response with color and indentation
+  human, C      humanize response with color and indentation
+  pretty        humanize response with color and indentation (same as human)
   version, V    show version
-  dry, D        only print the url that would be requested
+  dry, D        print the url that would be request instead of fetching it
   help, usage   show this help
 
 SEE ALSO:
         battleaxe, wowaxe, scaxe, daxe
 
 VERSION:
-  0.0.1
+  0.0.10
+
 ```
 ## Releases
 
