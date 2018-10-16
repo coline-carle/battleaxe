@@ -1,4 +1,4 @@
-# battleaxe
+
 [![CircleCI](https://circleci.com/gh/coline-carle/battleaxe.svg?style=svg)](https://circleci.com/gh/coline-carle/battleaxe)
 
 battleaxe is an opiniated terminal client for blizzard.com community API
@@ -79,5 +79,5 @@ this :
 
 MIT License
 
-Copyright (c) 2017 Sweetlie <Colin Carle>
+Copyright (c) 2018 Coline Carle
 
