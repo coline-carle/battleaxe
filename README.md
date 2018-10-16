@@ -4,21 +4,16 @@
 battleaxe is an opiniated terminal client for blizzard.com community API
 
 ## configuration
+```sh
 export BLIZZARD_CLIENT_ID="..."
 export BLIZZARD_CLIENT_SECRET="..."
-
+```
 
 ## The storyline
 
 ```
 battleaxe  us://wow/achievement/2144
-````
-
-```
 battleaxe wow://achievement/2144
-````
-
-```
 wowaxe  us://achievement/2144
 ````
 
